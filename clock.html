@@ -1,0 +1,125 @@
+<html>
+<head>
+<style>
+
+.nightmode {
+  background-color: #121212;
+  color: #fff;
+}
+
+/* Base daytime styles */
+.daymode {
+  background-color: #000000;
+  color: #333;
+  margin-left: 400px;
+  margin-right: 400px;
+  padding: auto;
+  box-shadow: #00CCFF;
+
+}
+
+/* Target MacOS users who have Dark Mode enabled */
+@media (prefers-color-scheme: dark) {
+  .daymode {
+    background-color: #ff0000;
+    color: #000000;
+
+  }
+}
+
+/* Used to wrap any lines of text  */
+.clocktext {
+  display: block;
+  margin: 0;
+  padding: 1px 0 0 0;
+  text-align: center;
+  white-space: nowrap;
+  width: 100%;
+  color: whitesmoke;
+}
+
+#date {
+  font-size: 1.3rem;
+  padding-top: 15px;
+  color: #ff0000;
+}
+
+#time {
+  font-size: 5rem;
+  margin: 1px 0 0 0;
+  color: #fff6fc;
+}
+
+#time span {
+  display: inline-block;
+  font-size: 1.5rem;
+  line-height: 1.5;
+  margin: 0 0 0 0.5em;
+  padding: 0;
+  text-align: left;
+  vertical-align: baseline;
+  white-space: normal;
+  width: 2em;
+}
+
+@media (min-width: 480px){
+  #date {font-size: 2rem;}
+  #time {font-size: 8rem;}
+  #time span {
+    font-size: 2rem;
+    line-height: 2;
+  }
+}
+</style>
+</head>
+
+  <main id="container" class="daymode">
+
+  <time id="date" datetime="" class="clocktext">Someday, Anymonth 15, 20XX</time>
+  <time id="time" datetime="" class="clocktext">12:00<span>:00 PM</span></time>
+
+</main>
+
+<script>
+var now, dd, td;
+var months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+document.addEventListener("DOMContentLoaded", init, false);
+function init() {
+  dd = document.getElementById("date");
+  td = document.getElementById("time");
+  updateTime();
+  setInterval(updateTime,1000);
+}
+
+function updateTime() {
+  var clockdata = getClockStrings();
+  dd.innerHTML = clockdata.datehtml;
+  td.innerHTML = clockdata.timehtml;
+  dd.dateTime = now.toISOString();
+  td.dateTime = now.toISOString();
+}
+
+function getClockStrings() {
+  now = new Date();
+  var year = now.getFullYear();
+  var month = months[now.getMonth()];
+  var date = now.getDate();
+  var day = days[now.getDay()];
+  var hour = now.getHours();
+  var minutes = now.getMinutes();
+  var seconds = now.getSeconds();
+  var meridian = hour < 12 ? "AM" : "PM";
+  var clockhour = hour > 12 ? hour - 12 : hour;
+  if (hour === 0) {clockhour = 12;}
+  var clockminutes = minutes < 10 ? "0" + minutes : minutes;
+  var clockseconds = seconds < 10 ? "0" + seconds : seconds;
+  var datehtml = day + ", " + month + " " + date + ", " + year;
+  var timehtml = clockhour + ":" + clockminutes + "<span>:" + clockseconds + " " + meridian + "</span>";
+  return {"datehtml":datehtml,"timehtml":timehtml};
+}
+
+</script>
+</body>
+</html>
